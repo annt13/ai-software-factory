@@ -663,7 +663,9 @@ ai-software-factory/
 │   │       ├── README.md
 │   │       ├── template.md
 │   │       ├── ADR-0001-first-provider-claude-code.md
-│   │       └── ADR-0002-claude-code-cli-subprocess.md
+│   │       ├── ADR-0002-claude-code-cli-subprocess.md
+│   │       ├── ADR-0003-product-positioning-template-based-factory.md
+│   │       └── ADR-0004-own-runtime-vs-orca.md
 │   │
 │   ├── 03-agent-system/
 │   │   ├── agent-specification.md
@@ -750,12 +752,14 @@ Ví dụ:
 
 - ADR-0001: First Provider — Claude Code (Accepted).
 - ADR-0002: Claude Code Integration via CLI Subprocess (Accepted).
-- ADR-0003: Database Selection.
-- ADR-0004: Provider Adapter Architecture.
-- ADR-0005: Workspace Isolation Strategy.
-- ADR-0006: Agent Execution Model.
-- ADR-0007: Event Architecture.
-- ADR-0008: Local Runtime Strategy.
+- ADR-0003: Product Positioning — Template-based AI Software Factory (Accepted).
+- ADR-0004: Own Agent Runtime vs Building on Orca (Accepted).
+- Database Selection.
+- Provider Adapter Architecture.
+- Workspace Isolation Strategy.
+- Agent Execution Model.
+- Event Architecture.
+- Local Runtime Strategy.
 
 Mỗi ADR nên có:
 

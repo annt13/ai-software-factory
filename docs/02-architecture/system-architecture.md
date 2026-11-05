@@ -284,7 +284,7 @@ A reusable definition of an agent's role.
 
 Example:
 
-```mermaid
+```yaml
 name: frontend-agent
 role: frontend_developer
 description: Implements frontend features.
@@ -300,7 +300,7 @@ tools:
   - filesystem
   - terminal
   - git
-```yaml
+```
 
 The actual provider and model should be configurable at runtime.
 
@@ -531,6 +531,7 @@ This is a future extension, not an MVP requirement.
 
 | Decision                | Initial direction                    |
 | ----------------------- | ------------------------------------ |
+| Product positioning     | AI Software Factory (ADR-0003)       |
 | Deployment              | Local-first                          |
 | Provider integration    | Adapter-based                        |
 | Agent definition        | Provider-independent                 |
@@ -544,6 +545,7 @@ This is a future extension, not an MVP requirement.
 | Database                | Local database initially             |
 | Workspace isolation     | Separate workspaces or Git worktrees |
 | Workflow                | Predefined workflows initially       |
+| Runtime ownership       | Own runtime, no Orca (ADR-0004)      |
 | Remote workers          | Future capability                    |
 
 

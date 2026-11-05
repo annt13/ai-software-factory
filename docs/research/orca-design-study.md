@@ -9,9 +9,7 @@ owner: Project Team
 related_documents:
   - ADR-0001 First Provider — Claude Code
   - ADR-0002 Claude Code Integration via CLI Subprocess
-  - DOC-05 Component Architecture
-  - DOC-08 State Machine & Event Architecture
-  - DOC-09 Agent & Orchestrator Specification
+  - ADR-0004 Own Agent Runtime vs Building on Orca
   - DOC-10 Provider Adapter Specification
   - DOC-11 Workspace & Security Strategy
 ```
@@ -20,9 +18,11 @@ related_documents:
 
 ## 1. Mục đích
 
-Tài liệu này ghi lại cách Orca thiết kế việc chạy và điều phối nhiều AI coding agent. Mục tiêu là học những gì phù hợp cho AI Software Factory và nhận diện những điểm nên tránh.
+Tài liệu này ghi lại cách Orca thiết kế việc chạy và điều phối nhiều AI coding agent. Mục tiêu là học cách Orca kết nối và sử dụng agent provider.
 
-Đây là tài liệu nghiên cứu, **không phải quyết định kiến trúc**. Các đề xuất ở mục 9 chỉ có hiệu lực khi được ghi nhận bằng ADR hoặc đưa vào tài liệu thiết kế tương ứng.
+Đây là tài liệu nghiên cứu, **không phải quyết định kiến trúc**. Các điểm ở mục 8 chỉ có hiệu lực khi được ghi nhận bằng ADR hoặc đưa vào tài liệu thiết kế tương ứng.
+
+**Phạm vi tham khảo (theo [ADR-0004](../02-architecture/adr/ADR-0004-own-runtime-vs-orca.md)):** AI Software Factory không phụ thuộc vào Orca. Orca chỉ được tham khảo về cách kết nối và sử dụng agent provider (mục 3). Các mục 4–7 chỉ mang tính mô tả (xem mục 8.2).
 
 ### Nguồn và phương pháp
 
@@ -184,49 +184,26 @@ Lý do tồn tại của fencing: không phải lúc nào cũng chứng minh đ�
 - `terminal wait --for exit|tui-idle`, `terminal send --wait-submit` với receipt theo từng bước (`input_accepted`, `turn_started`).
 - Lỗi trả về mã ổn định kèm `nextSteps`.
 
-## 8. So sánh kiến trúc
+## 8. Áp dụng cho AI Software Factory
 
-| Khía cạnh | Orca | AI Software Factory (thiết kế hiện tại) |
-| --------- | ---- | --------------------------------------- |
-| Ai điều phối | **Một agent coordinator** gọi lệnh `orca` để giao việc. Orca không có scheduler tích hợp; vòng lặp điều phối chính là agent | **Orchestrator trung tâm** trong runtime của factory |
-| Tính đúng đắn của giao thức | Phụ thuộc agent tuân theo quy tắc viết bằng văn xuôi ("đúng một lần", "xác nhận trước khi…") **(suy luận: dễ bị vi phạm)** | Có thể kiểm soát bằng code và schema |
-| Chuyển trạng thái | Do runtime Orca thực thi, nhưng được kích hoạt bởi lệnh mà agent gọi | Do Task Engine / Runtime Manager thực thi |
-| Điều hướng worker | Kéo (pull): worker chỉ thấy message khi tự kiểm tra hộp thư | Chưa thiết kế |
-| Phạm vi sản phẩm | Môi trường làm việc tổng quát cho đội agent | Quy trình phát triển phần mềm có kế hoạch, kiểm chứng và trực quan hoá |
+Theo [ADR-0004](../02-architecture/adr/ADR-0004-own-runtime-vs-orca.md), chỉ những điểm về **kết nối và sử dụng agent provider** được tham khảo. Mọi điểm đều phải đối chiếu với tài liệu chính thức của provider trước khi đưa vào thiết kế.
 
-## 9. Bài học cho AI Software Factory
-
-### 9.1. Nên học
+### 8.1. Tham khảo về kết nối provider
 
 | # | Ý tưởng | Ảnh hưởng tới |
 | - | ------- | ------------- |
-| 1 | **Tách Task / ExecutionAttempt / AgentInstance.** Lần thử (không phải Task, không phải tiến trình) là nơi giữ thẩm quyền. Đúng với yêu cầu "không gộp các khái niệm" trong Documentation Plan §2.2 | DOC-06, DOC-08 |
-| 2 | **Fencing bằng generation:** mỗi lần thử có số thế hệ; kết quả từ thế hệ cũ bị từ chối | DOC-08, Failure & Recovery Strategy |
-| 3 | **Trạng thái sống ba giá trị có lý do**, và quy tắc "thiếu bằng chứng không cho phép hành động phá huỷ" | DOC-08, DOC-11 |
-| 4 | **Tách vòng đời tài nguyên tiến trình khỏi trạng thái Task**; lưu output trước khi giải phóng | DOC-08, DOC-10 |
-| 5 | **Idempotency key cho mọi thao tác thay đổi trạng thái** (API và lệnh nội bộ) | API Specification, DOC-05 |
-| 6 | **Kết quả hoàn thành có cấu trúc bắt buộc:** outcome, tóm tắt, file đã sửa. Heartbeat không bao giờ được hiểu là hoàn thành | DOC-09 |
-| 7 | **Receipt "requested vs effective"** và **`nextAction` cụ thể** trong lỗi và trạng thái — rất hợp với Command Center | DOC-10, UI |
-| 8 | **Circuit breaker** giới hạn số lần thử lại | Failure & Recovery Strategy |
-| 9 | **`--setting-sources user`** để chạy Claude Code trên repo không tin cậy mà vẫn dùng đăng nhập bằng gói (thay cho `--bare`) | ADR-0001, DOC-11 |
-| 10 | **Tiến trình sống lâu với `--input-format stream-json`:** nhiều lượt trong một tiến trình, ngắt bằng control request thay vì tín hiệu — giải quyết vấn đề không có SIGINT trên Windows | ADR-0002, DOC-10 |
-| 11 | **Capability có phiên bản** và lùi về phương án dự phòng có giải thích | DOC-10 |
-| 12 | **Task spec có cấu trúc** (Target, Change, Constraints, Ownership, Observable acceptance) | DOC-09 |
+| 1 | **`--setting-sources user`** để chạy Claude Code trên repo không tin cậy mà vẫn dùng đăng nhập bằng gói (thay cho `--bare`) | ADR-0001, DOC-11 |
+| 2 | **Tiến trình sống lâu với `--input-format stream-json`:** nhiều lượt trong một tiến trình, ngắt bằng control request thay vì tín hiệu — có thể giải quyết vấn đề không có SIGINT trên Windows | ADR-0002, DOC-10 |
+| 3 | **Phát hiện capability** của provider và lùi về phương án dự phòng có giải thích | DOC-10 |
+| 4 | **So sánh cấu hình yêu cầu và cấu hình thực tế** (model, effort…) vì mỗi provider hỗ trợ khác nhau (mục 3.3) | DOC-10 |
+| 5 | **Ưu tiên cơ chế có tài liệu.** Orca dựa vào flag chưa công bố (`--permission-prompt-tool stdio`, `--thinking-display`). Nếu buộc dùng cơ chế nội bộ thì cô lập trong adapter, kiểm tra capability và có test hồi quy theo phiên bản | ADR-0002, DOC-10 |
 
-### 9.2. Nên tránh hoặc làm khác
+### 8.2. Ngoài phạm vi tham khảo
 
-| Điểm yếu của Orca | Hướng của AI Software Factory |
-| ----------------- | ----------------------------- |
-| Giao thức phụ thuộc agent tuân thủ quy tắc văn xuôi | Giữ lập lịch và chuyển trạng thái **xác định trong code**. LLM chỉ dùng cho phân tích, lập kế hoạch, thực thi và review |
-| Agent báo cáo bằng cách gọi CLI với nhiều tham số phải sao chép nguyên văn | **(Đề xuất)** Factory cung cấp một MCP server cho agent, với các tool có schema như `report_progress`, `complete_task`, `ask_question`. Cùng server đó có thể làm `--permission-prompt-tool` theo cách **có tài liệu chính thức** |
-| Điều hướng kiểu pull, có thể trễ | Với tiến trình sống lâu, Runtime có thể gửi thẳng message vào stdin của agent |
-| `unverifiable` có thể chờ vô thời hạn | Có chính sách timeout rõ ràng, hết hạn thì tạo ApprovalRequest cho người dùng |
-| Dựa vào flag chưa công bố (`--permission-prompt-tool stdio`, `--thinking-display`) | Ưu tiên cơ chế có tài liệu; nếu buộc dùng cơ chế nội bộ thì cô lập trong adapter, kiểm tra capability và có test hồi quy theo phiên bản |
-| Độ phức tạp do tương thích ngược phiên bản (`*.v1`, legacy contract) | Giữ MVP đơn giản, nhưng chuẩn bị sẵn trường version trong event schema |
+Các mục 4–7 (domain model, vòng đời, giao thức coordinator–worker, workspace, remote, quan sát) chỉ mô tả cách Orca hoạt động. Chúng **không phải đề xuất** cho AI Software Factory. Domain model, state machine, orchestration và workspace của factory tuân theo các tài liệu gốc: [README](../../README.md), [Product Overview](../01-product/product-overview.md), [System Architecture](../02-architecture/system-architecture.md) và [Development Roadmap](../06-development/development-roadmap.md).
 
-## 10. Câu hỏi mở cho PRD và MVP Scope
+## 9. Câu hỏi mở
 
-1. **Khác biệt sản phẩm:** Orca đã có worktree theo agent, đa provider, task có phụ thuộc, gate phê duyệt và giám sát worker. AI Software Factory khác ở đâu? Ứng viên: Orchestrator trung tâm có kiểm chứng kết quả theo acceptance criteria, workflow phát triển phần mềm định sẵn, Agent Office, quan sát chi phí và trạng thái theo runtime.
-2. **Xây mới hay xây trên Orca:** có nên dùng Orca (MIT) làm lớp thực thi, hoặc tích hợp như một "provider" dạng runtime, thay vì tự viết Runtime Manager?
-3. **Kênh báo cáo của agent:** MCP server của factory hay CLI như Orca?
-4. **Mô hình tiến trình:** chạy một lần mỗi lần thử (`-p`) hay tiến trình sống lâu (`--input-format stream-json`)? Cần làm rõ trong spike Phase 1 (xem ADR-0002).
+1. ~~**Định vị sản phẩm.**~~ Đã quyết định 2026-11-05 — xem [ADR-0003](../02-architecture/adr/ADR-0003-product-positioning-template-based-factory.md).
+2. ~~**Xây mới hay xây trên Orca.**~~ Đã quyết định 2026-11-05: tự xây runtime, không phụ thuộc Orca — xem [ADR-0004](../02-architecture/adr/ADR-0004-own-runtime-vs-orca.md).
+3. **Mô hình tiến trình:** chạy một lần mỗi lần thử (`-p`) hay tiến trình sống lâu (`--input-format stream-json`)? Cần làm rõ trong spike Phase 1 (xem ADR-0002).
