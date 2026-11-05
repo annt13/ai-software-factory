@@ -158,7 +158,7 @@ Không nên gộp các khái niệm này thành một entity duy nhất.
 
 Tài liệu cần trả lời được các vấn đề:
 
-1. Làm sao phát hiện Codex CLI đã được cài đặt?
+1. Làm sao phát hiện Claude Code CLI đã được cài đặt?
 2. Làm sao kiểm tra trạng thái authentication?
 3. Làm sao khởi chạy CLI process?
 4. Làm sao gửi prompt và context?
@@ -244,7 +244,7 @@ Không cần hoàn thiện toàn bộ 40 tài liệu ở trên. Chỉ cần tậ
 
 | STT | Document                               | Expected Outcome                                | Status      |
 | --- | -------------------------------------- | ----------------------------------------------- | ----------- |
-| 01  | Product Requirements Document          | Hiểu rõ sản phẩm và mục tiêu                    | Not Started |
+| 01  | Product Requirements Document          | Hiểu rõ sản phẩm và mục tiêu                    | Drafting    |
 | 02  | MVP Scope                              | Phạm vi MVP được xác định                       | Not Started |
 | 03  | Use Cases &amp; User Stories           | Các luồng sử dụng được xác định                 | Not Started |
 | 04  | Technology Stack                       | Công nghệ được lựa chọn                         | Not Started |
@@ -253,7 +253,7 @@ Không cần hoàn thiện toàn bộ 40 tài liệu ở trên. Chỉ cần tậ
 | 07  | Database Design                        | Cấu trúc dữ liệu được xác định                  | Not Started |
 | 08  | State Machine &amp; Event Architecture | State và event lifecycle được thiết kế          | Not Started |
 | 09  | Agent &amp; Orchestrator Specification | Cách tổ chức và điều phối agent được xác định   | Not Started |
-| 10  | Provider Adapter Specification         | Chuẩn tích hợp Codex CLI đầu tiên được xác định | Not Started |
+| 10  | Provider Adapter Specification         | Chuẩn tích hợp provider đầu tiên được xác định  | Not Started |
 | 11  | Workspace &amp; Security Strategy      | Cách cô lập và kiểm soát thực thi được xác định | Not Started |
 | 12  | Testing Strategy                       | Chiến lược kiểm thử được xác định               | Not Started |
 
@@ -463,7 +463,7 @@ Expected outcome: Agent architecture và orchestration workflow.
 
 **Objective:** Xây dựng cơ chế tích hợp nhiều AI coding providers.
 
-MVP ưu tiên Codex CLI làm provider đầu tiên.
+MVP dùng **Claude Code** làm provider đầu tiên (Accepted — xem [ADR-0001](02-architecture/adr/ADR-0001-first-provider-claude-code.md)). Codex CLI và các provider khác được bổ sung ở Phase 4.
 
 Nội dung:
 
@@ -482,7 +482,7 @@ Nội dung:
 - Crash Recovery.
 - Error Mapping.
 
-Expected outcome: Adapter contract và Codex CLI integration specification.
+Expected outcome: Adapter contract và integration specification cho provider đầu tiên.
 
 ### DOC-11: Workspace &amp; Security Strategy
 
@@ -606,7 +606,7 @@ Exit Criteria:
 
 Documents:
 
-- [README.md](http://README.md).
+- [README.md](../README.md).
 - Installation Guide.
 - Quick Start Guide.
 - Configuration Guide.
@@ -638,8 +638,11 @@ Exit Criteria:
 ai-software-factory/
 │
 ├── README.md
+├── CLAUDE.md
 │
 ├── docs/
+│   │
+│   ├── DOCUMENTATION-PLAN.md
 │   │
 │   ├── 01-product/
 │   │   ├── product-overview.md
@@ -659,7 +662,12 @@ ai-software-factory/
 │   │   ├── state-machine.md
 │   │   └── adr/
 │   │       ├── README.md
-│   │       └── ADR-0001-template.md
+│   │       ├── template.md
+│   │       ├── ADR-0001-first-provider-claude-code.md
+│   │       ├── ADR-0002-claude-code-cli-subprocess.md
+│   │       ├── ADR-0003-product-positioning-template-based-factory.md
+│   │       ├── ADR-0004-own-runtime-vs-orca.md
+│   │       └── ADR-0005-application-form-local-web-app.md
 │   │
 │   ├── 03-agent-system/
 │   │   ├── agent-specification.md
@@ -691,13 +699,16 @@ ai-software-factory/
 │   │   ├── configuration.md
 │   │   └── troubleshooting.md
 │   │
-│   └── 07-open-source/
-│       ├── contribution-guide.md
-│       ├── adapter-development.md
-│       ├── code-of-conduct.md
-│       ├── security-policy.md
-│       ├── license-policy.md
-│       └── release-strategy.md
+│   ├── 07-open-source/
+│   │   ├── contribution-guide.md
+│   │   ├── adapter-development.md
+│   │   ├── code-of-conduct.md
+│   │   ├── security-policy.md
+│   │   ├── license-policy.md
+│   │   └── release-strategy.md
+│   │
+│   └── research/
+│       └── orca-design-study.md
 │
 └── ...
 ```
@@ -723,7 +734,7 @@ ai-software-factory/
 Mỗi tài liệu nên có metadata:
 
 ```
-document_id: DOC-001
+document_id: DOC-01
 title: Product Requirements Document
 version: 1.0
 status: draft
@@ -731,9 +742,20 @@ created_at: YYYY-MM-DD
 updated_at: YYYY-MM-DD
 owner: Project Team
 related_documents:
-  - DOC-002
-  - DOC-003
+  - DOC-02 MVP Scope
+  - DOC-03 Use Cases & User Stories
 ```
+
+Quy ước mã tài liệu:
+
+| Mã | Dùng cho |
+| -- | -------- |
+| `DOC-01` … `DOC-12` | 12 tài liệu ưu tiên ở §3.1, giữ đúng số thứ tự trong bảng |
+| `DOC-13` trở đi | Các tài liệu khác, đánh số tiếp theo khi được thêm metadata: DOC-13 Product Overview, DOC-14 System Architecture, DOC-15 Development Roadmap |
+| `ADR-0001` … | Architecture Decision Records (§6.3) |
+| `RES-001` … | Tài liệu nghiên cứu trong `docs/research/` |
+
+Trong `related_documents`, ghi mã kèm tên tài liệu, ví dụ `DOC-02 MVP Scope`.
 
 ## 6.3. Architecture Decision Records
 
@@ -741,12 +763,17 @@ Các quyết định quan trọng cần được ghi lại bằng ADR.
 
 Ví dụ:
 
-- ADR-0001: Database Selection.
-- ADR-0002: Provider Adapter Architecture.
-- ADR-0003: Workspace Isolation Strategy.
-- ADR-0004: Agent Execution Model.
-- ADR-0005: Event Architecture.
-- ADR-0006: Local Runtime Strategy.
+- ADR-0001: First Provider — Claude Code (Accepted).
+- ADR-0002: Claude Code Integration via CLI Subprocess (Accepted).
+- ADR-0003: Product Positioning — Template-based AI Software Factory (Accepted).
+- ADR-0004: Own Agent Runtime vs Building on Orca (Accepted).
+- ADR-0005: Application Form — Local Web App (Accepted).
+- Database Selection.
+- Provider Adapter Architecture.
+- Workspace Isolation Strategy.
+- Agent Execution Model.
+- Event Architecture.
+- Local Runtime Strategy.
 
 Mỗi ADR nên có:
 

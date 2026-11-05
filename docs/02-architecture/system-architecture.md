@@ -1,3 +1,22 @@
+```yaml
+document_id: DOC-14
+title: System Architecture
+version: 1.0
+status: draft
+created_at: 2026-11-05
+updated_at: 2026-11-05
+owner: Project Team
+related_documents:
+  - DOC-05 Component Architecture
+  - DOC-06 Domain Model
+  - DOC-08 State Machine & Event Architecture
+  - ADR-0001 First Provider — Claude Code
+  - ADR-0002 Claude Code Integration via CLI Subprocess
+  - ADR-0003 Product Positioning — Template-based AI Software Factory
+  - ADR-0004 Own Agent Runtime vs Building on Orca
+  - ADR-0005 Application Form — Local Web App
+```
+
 # System Architecture
 
 ## 1. Architecture Goals
@@ -17,7 +36,7 @@ The architecture should start simple and evolve without introducing unnecessary 
 
 ## 2. High-level Architecture
 
-```
+```mermaid
 flowchart TB
     U[User]
     UI[AI Software Factory UI]
@@ -212,7 +231,7 @@ Each adapter translates normalized platform requests into provider-specific exec
 
 Example conceptual interface:
 
-```
+```typescript
 interface ProviderAdapter {
   getCapabilities(): Promise<ProviderCapabilities>;
 
@@ -284,12 +303,12 @@ A reusable definition of an agent's role.
 
 Example:
 
-```
+```yaml
 name: frontend-agent
 role: frontend_developer
 description: Implements frontend features.
 
-provider_preference: codex
+provider_preference: claude-code
 model_preference: default
 
 skills:
@@ -453,7 +472,7 @@ A full event-sourcing architecture is not required for the MVP.
 
 Initial deployment:
 
-```
+```mermaid
 flowchart TB
     UI[Web UI]
     API[Local Application Backend]
@@ -529,20 +548,25 @@ This is a future extension, not an MVP requirement.
 ## 11. Architecture Decisions
 
 
-| Decision             | Initial direction                    |
-| -------------------- | ------------------------------------ |
-| Deployment           | Local-first                          |
-| Provider integration | Adapter-based                        |
-| Agent definition     | Provider-independent                 |
-| Execution            | Official local CLI tools first       |
-| Orchestration        | Central Orchestrator                 |
-| Task state           | Central Task Manager                 |
-| Runtime state        | Runtime Manager                      |
-| UI updates           | Event-driven                         |
-| Database             | Local database initially             |
-| Workspace isolation  | Separate workspaces or Git worktrees |
-| Workflow             | Predefined workflows initially       |
-| Remote workers       | Future capability                    |
+| Decision                | Initial direction                    |
+| ----------------------- | ------------------------------------ |
+| Product positioning     | AI Software Factory (ADR-0003)       |
+| Deployment              | Local-first                          |
+| Application form        | Local web app (ADR-0005)             |
+| Provider integration    | Adapter-based                        |
+| Agent definition        | Provider-independent                 |
+| Execution               | Official local CLI tools first       |
+| First provider          | Claude Code (ADR-0001)               |
+| Claude Code integration | CLI subprocess (ADR-0002)            |
+| Orchestration           | Central Orchestrator                 |
+| Task state              | Central Task Manager                 |
+| Runtime state           | Runtime Manager                      |
+| UI updates              | Event-driven                         |
+| Database                | Local database initially             |
+| Workspace isolation     | Separate workspaces or Git worktrees |
+| Workflow                | Predefined workflows initially       |
+| Runtime ownership       | Own runtime, no Orca (ADR-0004)      |
+| Remote workers          | Future capability                    |
 
 
 ## 12. Key Architectural Rule

@@ -159,9 +159,13 @@ These capabilities can be considered after the local-first foundation is stable.
 
 ## 8. Documentation
 
-- [Product Overview](https://chatgpt.com/c/docs/01-product-overview.md)
-- [System Architecture](https://chatgpt.com/c/docs/02-system-architecture.md)
-- [Development Roadmap](https://chatgpt.com/c/docs/03-development-roadmap.md)
+- [Documentation Plan](docs/DOCUMENTATION-PLAN.md)
+- [Product Overview](docs/01-product/product-overview.md)
+- [Product Requirements](docs/01-product/product-requirements.md)
+- [System Architecture](docs/02-architecture/system-architecture.md)
+- [Development Roadmap](docs/06-development/development-roadmap.md)
+- [Architecture Decision Records](docs/02-architecture/adr/README.md)
+- [Research: Orca Design Study](docs/research/orca-design-study.md)
 
 ## 9. Guiding Principle
 

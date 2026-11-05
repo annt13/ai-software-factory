@@ -1,3 +1,18 @@
+```yaml
+document_id: DOC-15
+title: Development Roadmap
+version: 1.0
+status: draft
+created_at: 2026-11-05
+updated_at: 2026-11-05
+owner: Project Team
+related_documents:
+  - DOC-02 MVP Scope
+  - DOC-13 Product Overview
+  - ADR-0001 First Provider — Claude Code
+  - ADR-0003 Product Positioning — Template-based AI Software Factory
+```
+
 # Development Roadmap
 
 ## 1. Development Strategy
@@ -80,7 +95,7 @@ This is the most important technical milestone.
 
 ### Initial Provider
 
-Start with one provider, preferably Codex CLI or Claude Code.
+Start with Claude Code (see [ADR-0001](../02-architecture/adr/ADR-0001-first-provider-claude-code.md)). Codex CLI is planned as the second provider in Phase 4.
 
 Do not integrate every provider at this stage.
 
