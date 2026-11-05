@@ -1,3 +1,22 @@
+```yaml
+document_id: DOC-14
+title: System Architecture
+version: 1.0
+status: draft
+created_at: 2026-11-05
+updated_at: 2026-11-05
+owner: Project Team
+related_documents:
+  - DOC-05 Component Architecture
+  - DOC-06 Domain Model
+  - DOC-08 State Machine & Event Architecture
+  - ADR-0001 First Provider — Claude Code
+  - ADR-0002 Claude Code Integration via CLI Subprocess
+  - ADR-0003 Product Positioning — Template-based AI Software Factory
+  - ADR-0004 Own Agent Runtime vs Building on Orca
+  - ADR-0005 Application Form — Local Web App
+```
+
 # System Architecture
 
 ## 1. Architecture Goals
@@ -533,6 +552,7 @@ This is a future extension, not an MVP requirement.
 | ----------------------- | ------------------------------------ |
 | Product positioning     | AI Software Factory (ADR-0003)       |
 | Deployment              | Local-first                          |
+| Application form        | Local web app (ADR-0005)             |
 | Provider integration    | Adapter-based                        |
 | Agent definition        | Provider-independent                 |
 | Execution               | Official local CLI tools first       |

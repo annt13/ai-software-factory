@@ -161,6 +161,7 @@ These capabilities can be considered after the local-first foundation is stable.
 
 - [Documentation Plan](docs/DOCUMENTATION-PLAN.md)
 - [Product Overview](docs/01-product/product-overview.md)
+- [Product Requirements](docs/01-product/product-requirements.md)
 - [System Architecture](docs/02-architecture/system-architecture.md)
 - [Development Roadmap](docs/06-development/development-roadmap.md)
 - [Architecture Decision Records](docs/02-architecture/adr/README.md)

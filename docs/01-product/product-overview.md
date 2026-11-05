@@ -1,3 +1,18 @@
+```yaml
+document_id: DOC-13
+title: Product Overview
+version: 1.0
+status: draft
+created_at: 2026-11-05
+updated_at: 2026-11-05
+owner: Project Team
+related_documents:
+  - DOC-01 Product Requirements Document
+  - DOC-02 MVP Scope
+  - DOC-15 Development Roadmap
+  - ADR-0003 Product Positioning — Template-based AI Software Factory
+```
+
 # Product Overview
 
 ## 1. Product Definition

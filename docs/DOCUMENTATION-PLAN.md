@@ -244,7 +244,7 @@ Không cần hoàn thiện toàn bộ 40 tài liệu ở trên. Chỉ cần tậ
 
 | STT | Document                               | Expected Outcome                                | Status      |
 | --- | -------------------------------------- | ----------------------------------------------- | ----------- |
-| 01  | Product Requirements Document          | Hiểu rõ sản phẩm và mục tiêu                    | Not Started |
+| 01  | Product Requirements Document          | Hiểu rõ sản phẩm và mục tiêu                    | Drafting    |
 | 02  | MVP Scope                              | Phạm vi MVP được xác định                       | Not Started |
 | 03  | Use Cases &amp; User Stories           | Các luồng sử dụng được xác định                 | Not Started |
 | 04  | Technology Stack                       | Công nghệ được lựa chọn                         | Not Started |
@@ -638,6 +638,7 @@ Exit Criteria:
 ai-software-factory/
 │
 ├── README.md
+├── CLAUDE.md
 │
 ├── docs/
 │   │
@@ -665,7 +666,8 @@ ai-software-factory/
 │   │       ├── ADR-0001-first-provider-claude-code.md
 │   │       ├── ADR-0002-claude-code-cli-subprocess.md
 │   │       ├── ADR-0003-product-positioning-template-based-factory.md
-│   │       └── ADR-0004-own-runtime-vs-orca.md
+│   │       ├── ADR-0004-own-runtime-vs-orca.md
+│   │       └── ADR-0005-application-form-local-web-app.md
 │   │
 │   ├── 03-agent-system/
 │   │   ├── agent-specification.md
@@ -732,7 +734,7 @@ ai-software-factory/
 Mỗi tài liệu nên có metadata:
 
 ```
-document_id: DOC-001
+document_id: DOC-01
 title: Product Requirements Document
 version: 1.0
 status: draft
@@ -740,9 +742,20 @@ created_at: YYYY-MM-DD
 updated_at: YYYY-MM-DD
 owner: Project Team
 related_documents:
-  - DOC-002
-  - DOC-003
+  - DOC-02 MVP Scope
+  - DOC-03 Use Cases & User Stories
 ```
+
+Quy ước mã tài liệu:
+
+| Mã | Dùng cho |
+| -- | -------- |
+| `DOC-01` … `DOC-12` | 12 tài liệu ưu tiên ở §3.1, giữ đúng số thứ tự trong bảng |
+| `DOC-13` trở đi | Các tài liệu khác, đánh số tiếp theo khi được thêm metadata: DOC-13 Product Overview, DOC-14 System Architecture, DOC-15 Development Roadmap |
+| `ADR-0001` … | Architecture Decision Records (§6.3) |
+| `RES-001` … | Tài liệu nghiên cứu trong `docs/research/` |
+
+Trong `related_documents`, ghi mã kèm tên tài liệu, ví dụ `DOC-02 MVP Scope`.
 
 ## 6.3. Architecture Decision Records
 
@@ -754,6 +767,7 @@ Ví dụ:
 - ADR-0002: Claude Code Integration via CLI Subprocess (Accepted).
 - ADR-0003: Product Positioning — Template-based AI Software Factory (Accepted).
 - ADR-0004: Own Agent Runtime vs Building on Orca (Accepted).
+- ADR-0005: Application Form — Local Web App (Accepted).
 - Database Selection.
 - Provider Adapter Architecture.
 - Workspace Isolation Strategy.
