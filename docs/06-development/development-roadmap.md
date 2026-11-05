@@ -80,7 +80,7 @@ This is the most important technical milestone.
 
 ### Initial Provider
 
-Start with one provider, preferably Codex CLI or Claude Code.
+Start with Claude Code (see [ADR-0001](../02-architecture/adr/ADR-0001-first-provider-claude-code.md)). Codex CLI is planned as the second provider in Phase 4.
 
 Do not integrate every provider at this stage.
 
